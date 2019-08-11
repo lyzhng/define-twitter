@@ -3,9 +3,7 @@ import time
 import tweepy
 
 from MentionStream import MentionStream
-from helper import (
-    fetch, random_word, _delete_tweets, api, auth, post_random_word
-)
+from helper import fetch, api, auth
 
 class MentionStreamListener(tweepy.StreamListener):
 
