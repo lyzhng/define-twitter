@@ -1,2 +1,3 @@
 USERNAME = '@dict_bot'
 INTERVAL = 60 * 10
+SPACE_REMAINING = 263

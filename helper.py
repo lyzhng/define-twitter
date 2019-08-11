@@ -5,7 +5,7 @@ import string
 from urllib.error import HTTPError
 
 from initialize import auth, api, wordAPI, wordsAPI
-from settings import INTERVAL
+from settings import INTERVAL, SPACE_REMAINING
 
 def define(word):
     definition = None
@@ -15,7 +15,8 @@ def define(word):
                 sourceDictionaries='all',
         )
         raw_def = next(
-            d for d in definition_list if d.text and len(d.text) <= 263
+            d for d in definition_list 
+            if d.text and len(d.text) <= SPACE_REMAINING
         )
         definition =  raw_def.text.replace('<xref>', '').replace('</xref>', '')
     except HTTPError as error: 
@@ -37,7 +38,8 @@ def example(word):
         try:
             example = wordAPI.getExamples(word)
             return next(
-                eg.text for eg in example.examples if len(eg.text) <= 263
+                eg.text for eg in example.examples
+                if len(eg.text) <= SPACE_REMAINING
             )
         except (TypeError, StopIteration):
             return None
@@ -62,7 +64,7 @@ def fetch(word):
             definition = define(current)
             eg = example(current)
         except StopIteration:
-            break
+            return (None, None)
         except HTTPError as error: 
             # no definitions/usage were found
             if error.code == 404:
